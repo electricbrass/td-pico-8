@@ -8,6 +8,8 @@ function _init()
 	cash = 100
 	framecount = 0
 	curlevel = 1
+	round = 1
+	maxround = 10
 end
 
 function _draw()
@@ -17,8 +19,11 @@ function _draw()
 	rectfill(104,0,128,128,1)
 	-- hud
 	spr(05,112,108)
+	-- want to align the / the same in 1 vs 2 digit round numbers
+	print(round.."/"..maxround, 107, 99, 6)
 	print("next",108,120,6)
 	print("♥",105,4,8)
+	-- might want to align lives and cash to the right
 	print(lives, 115,4,8)
 	print("◆",105,12,10)
 	print(cash, 115,12,10)
@@ -79,37 +84,32 @@ end
 
 function updateenemies()
 	for enemy in all(enemies) do
-		if enemy.px == enemy.tx then
-			if enemy.py < enemy.ty then
-				enemy.py += enemy.speed
+		local x_updated = false
+		if enemy.py < enemy.ty then
+			enemy.py += enemy.speed
+		elseif enemy.py > enemy.ty then
+			enemy.py -= enemy.speed
+		end
+		if enemy.px < enemy.tx then
+			x_updated = true
+			enemy.px += enemy.speed
+		elseif enemy.px > enemy.tx then
+			x_updated = true
+			enemy.px -= enemy.speed
+		end
+		if abs(enemy.py - enemy.ty) < enemy.speed and abs(enemy.px - enemy.tx) < enemy.speed then
+			enemy.px = enemy.tx
+			enemy.py = enemy.ty
+			enemy.tc += 1
+			if enemy.tc > #levelpaths[curlevel] then
+				del(enemies, enemy)
+				damage(enemy.damage)
 			else
-				enemy.py -= enemy.speed
-			end
-			if abs(enemy.py - enemy.ty) < enemy.speed then
-			 enemy.py = enemy.ty
-			 enemy.tc += 1
-			 if enemy.tc > #levelpaths[curlevel] then
-			 	del(enemies, enemy)
-			 	damage(enemy.damage)
-			 else
-				 enemy.tx = levelpaths[curlevel][enemy.tc]
+				if x_updated then
+					enemy.ty = levelpaths[curlevel][enemy.tc]
+				else
+					enemy.tx = levelpaths[curlevel][enemy.tc]
 				end
-			end
-		else
-		 if enemy.px < enemy.tx then
-				enemy.px += enemy.speed
-			else
-				enemy.px -= enemy.speed
-			end
-		 if abs(enemy.px - enemy.tx) < enemy.speed then
-			 enemy.px = enemy.tx
-			 enemy.tc += 1
-			 if enemy.tc > #levelpaths[curlevel] then
-			 	del(enemies, enemy)
-			 	damage(enemy.damage)
-			 else
-			 	enemy.ty = levelpaths[curlevel][enemy.tc]
-			 end
 			end
 		end
 	end
