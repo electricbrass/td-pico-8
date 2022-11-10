@@ -80,6 +80,7 @@ function newenemy(enemytype)
 	e.speed = enemytypes[enemytype][2]
 	e.damage = enemytypes[enemytype][3]
 	e.tc = 4
+	e.dead = false
 	add(enemies, e)
 end
 
@@ -152,7 +153,12 @@ end
 
 function updatetowers()
 	for t in all(towers) do
-	
+		if t.target and not t.dead then
+			-- rotate and fire
+		else
+			t.target = nil
+			-- search for target
+		end
 	end
 end
 
