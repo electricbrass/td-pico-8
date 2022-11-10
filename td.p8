@@ -19,13 +19,13 @@ function _draw()
 	-- hud
 	spr(05,112,108)
 	-- want to align the / the same in 1 vs 2 digit round numbers
-	print(round.."/"..maxround, 107, 99, 6)
+	print(round, 115 - #tostr(round) * 4, 99, 6)
+	print("/"..maxround, 115, 99, 6)
 	print("next",108,120,6)
 	print("♥",105,4,8)
-	-- might want to align lives and cash to the right
-	print(lives, 115,4,8)
+	print(lives, 127 - #tostr(lives) * 4,4,8)
 	print("◆",105,12,10)
-	print(cash, 115,12,10)
+	print(cash, 127 - #tostr(cash) * 4,12,10)
 	for i = 0, 68, 16 do
 		rect(106,i+24,113,i+31,6)
 		rect(118,i+24,125,i+31,6)
@@ -55,7 +55,7 @@ end
 function initgame()
 	enemies = {}
 	towers = {}
-	lives = 20
+	lives = 100
 	cash = 100
 	round = 1
 	maxround = 10
@@ -133,7 +133,7 @@ end
 -- towers
 
 tower_types = {
-	{"magic", 7, 4, 10},
+	{"magic", 7, 4, 16},
 	{"basic"}
 }
 
@@ -168,6 +168,9 @@ function drawtowers()
 		if framecount % 7 == 0 then
 			t.sproffset += 1
 			t.sproffset %= t.frames
+		end
+		if true then
+			circ(t.px + 4, t.py + 4, t.range, 15)
 		end
 	end
 end
