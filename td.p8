@@ -27,8 +27,10 @@ function _draw()
 	print("◆",105,12,10)
 	print(cash, 127 - #tostr(cash) * 4,12,10)
 	for i = 0, 64, 16 do
-		rect(106,i+24,113,i+31,6)
-		rect(118,i+24,125,i+31,6)
+		rectfill(105,i+23,114,i+32,0)
+		rectfill(117,i+23,126,i+32,0)
+		rect(105,i+23,114,i+32,5)
+		rect(117,i+23,126,i+32,5)
 		local tl = tower_types[i/16 + 1][2]
 		local tr = tower_types[i/16 + 6][2]
 		spr(tl,106,i+24)
